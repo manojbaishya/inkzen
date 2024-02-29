@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: Inkzen.Api",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/Inkzen.Api/Inkzen.Api.csproj",
+            "launchConfigurationId": "TargetFramework=;Inkzen.Api"
+        }
+    ]
+}
