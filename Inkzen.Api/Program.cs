@@ -10,6 +10,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Threading.Tasks;
 
 namespace Inkzen.Api;
 
@@ -20,6 +25,37 @@ public class Program
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
 
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        ConfigurationManager config = builder.Configuration;
+
+        builder.Services.AddAuthentication().AddCookie(options =>
+        {
+            options.AccessDeniedPath = new PathString("/manager/login/");
+            options.LoginPath = new PathString("/manager/Login/");
+            options.SlidingExpiration = true;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new()
+            {
+                ValidIssuer = "https://localhost:5001",
+                ValidAudience = "https://localhost:5001",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ea1ce084b55e03c5116b186d11a76939")),
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true
+            };
+
+            options.Events = new JwtBearerEvents
+            {
+                OnTokenValidated = ctx => Task.CompletedTask,
+                OnAuthenticationFailed = ctx =>
+                {
+                    Console.WriteLine("JwtBearerEvents Exception: {0}", ctx.Exception.Message);
+                    return Task.CompletedTask;
+                }
+            };
+        });
 
         builder.AddPiranha(options =>
         {
@@ -34,7 +70,7 @@ public class Program
 
             options.UseApi(api => api.AllowAnonymousAccess = true);
 
-            string connectionString = builder.Configuration.GetConnectionString("piranha");
+            string connectionString = config.GetConnectionString("piranha");
             options.UseEF<SQLiteDb>(db => db.UseSqlite(connectionString));
             options.UseIdentityWithSeed<IdentitySQLiteDb>(db => db.UseSqlite(connectionString));
         });
