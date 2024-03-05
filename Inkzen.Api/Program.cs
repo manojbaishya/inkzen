@@ -37,28 +37,8 @@ public class Program
             string connectionString = builder.Configuration.GetConnectionString("piranha");
             options.UseEF<SQLiteDb>(db => db.UseSqlite(connectionString));
             options.UseIdentityWithSeed<IdentitySQLiteDb>(db => db.UseSqlite(connectionString));
-
-            /**
-             * Here you can configure the different permissions
-             * that you want to use for securing content in the
-             * application.
-
-            options.UseSecurity(o =>
-            {
-                o.UsePermission("WebUser", "Web User");
-            });
-
-             */
-
-            /**
-             * Here you can specify the login url for the front end
-             * application. This does not affect the login url of
-             * the manager interface.
-
-            options.LoginUrl = "login";
-
-             */
         });
+
 
         builder.Services.AddSwaggerGen(options =>
         {
@@ -94,8 +74,8 @@ public class Program
                 .DeleteOrphans();
 
             // Configure Tiny MCE
-            EditorConfig.FromFile("editorconfig.json");
             options.UseTinyMCE();
+            EditorConfig.FromFile("editorconfig.json");
 
             options.UseIdentity();
         });
