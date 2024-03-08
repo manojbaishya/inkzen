@@ -29,35 +29,35 @@ public class Program
 
         builder.Services.AddAuthentication()
             .AddCookie(options =>
-                {
-                    options.AccessDeniedPath = new("/manager/login/");
-                    options.LoginPath = new("/manager/Login/");
-                    options.SlidingExpiration = true;
-                }
+            {
+                options.AccessDeniedPath = new("/manager/login/");
+                options.LoginPath = new("/manager/Login/");
+                options.SlidingExpiration = true;
+            }
             )
             .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new()
                 {
-                    options.TokenValidationParameters = new()
-                    {
-                        ValidIssuer = config["JwtSettings:Issuer"],
-                        ValidAudience = config["JwtSettings:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"])),
-                        ValidateAudience = true,
-                        ValidateIssuer = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true
-                    };
+                    ValidIssuer = config["JwtSettings:Issuer"],
+                    ValidAudience = config["JwtSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"])),
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true
+                };
 
-                    options.Events = new JwtBearerEvents
+                options.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = _ => Task.CompletedTask,
+                    OnAuthenticationFailed = ctx =>
                     {
-                        OnTokenValidated = ctx => Task.CompletedTask,
-                        OnAuthenticationFailed = ctx =>
-                        {
-                            Console.WriteLine("JwtBearerEvents Exception: {0}", ctx.Exception.Message);
-                            return Task.CompletedTask;
-                        }
-                    };
-                }
+                        Console.WriteLine("JwtBearerEvents Exception: {0}", ctx.Exception.Message);
+                        return Task.CompletedTask;
+                    }
+                };
+            }
             );
 
         builder.AddPiranha(options =>
@@ -72,9 +72,9 @@ public class Program
 
             options.UseApi(api => api.AllowAnonymousAccess = true);
 
-            string connectionString = config.GetConnectionString("piranha");
-            options.UseEF<SQLiteDb>(db => db.UseSqlite(connectionString));
-            options.UseIdentityWithSeed<IdentitySQLiteDb>(db => db.UseSqlite(connectionString));
+            string databaseConnection = config.GetConnectionString("piranha");
+            options.UseEF<SQLiteDb>(db => db.UseSqlite(databaseConnection));
+            options.UseIdentityWithSeed<IdentitySQLiteDb>(db => db.UseSqlite(databaseConnection));
         });
 
 
@@ -91,9 +91,8 @@ public class Program
             app.UseDeveloperExceptionPage();
 
             app.UseSwagger();
-            app.UseSwaggerUI(opt => { opt.SwaggerEndpoint("/swagger/v1/swagger.json", "PiranhaCMS API V1"); });
+            app.UseSwaggerUI(opt => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "PiranhaCMS API V1"));
         }
-
 
         app.UsePiranha(options =>
         {
@@ -114,6 +113,7 @@ public class Program
 
             options.UseIdentity();
         });
+
 
         app.Run();
     }

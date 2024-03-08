@@ -13,6 +13,7 @@ public abstract class Projects<T> : Content<T> where T : Projects<T>;
 [ContentType(Id = "Project", Title = "Project")]
 public class Project : Projects<Project>, ITaggedContent
 {
+    public const string ContentGroup = "Projects";
     [Region] public TextField Description { get; set; }
     [Region] public StringField Client { get; set; }
     [Region] public NumberField Year { get; set; }

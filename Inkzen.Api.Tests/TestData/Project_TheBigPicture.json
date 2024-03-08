@@ -1,0 +1,245 @@
+{
+    "regions":
+    {
+        "$type": "System.Dynamic.ExpandoObject, System.Linq.Expressions",
+        "Description":
+        {
+            "$type": "Piranha.Extend.Fields.TextField, Piranha",
+            "value": "Arbor Vitae is a clinic that specializes in helping individuals and couples overcome infertility and achieve their dreams of starting or growing a family. We offer a range of treatments and services, including assisted reproductive technologies, fertility testing and counseling, and donor programs."
+        },
+        "Client":
+        {
+            "$type": "Piranha.Extend.Fields.StringField, Piranha",
+            "value": "Arbor Vitae Health Initiatives"
+        },
+        "Year":
+        {
+            "$type": "Piranha.Extend.Fields.NumberField, Piranha",
+            "value": 2022
+        },
+        "Images":
+        {
+            "$type": "Piranha.Models.RegionList`1[[Piranha.Extend.Fields.ImageField, Piranha]], Piranha",
+            "$values":
+            [
+                {
+                    "id": "e41c6cf0-882a-48c2-b5a9-247d1ae71cfb",
+                    "media":
+                    {
+                        "properties":
+                        {
+                        },
+                        "versions":
+                        [
+                            {
+                                "id": "06db067b-a3e8-4ee1-993b-56e67cf9fe93",
+                                "size": 9932,
+                                "width": 210,
+                                "height": 160,
+                                "fileExtension": ".jpg"
+                            }
+                        ],
+                        "id": "e41c6cf0-882a-48c2-b5a9-247d1ae71cfb",
+                        "folderId": null,
+                        "type": 2,
+                        "filename": "PXL_20220529_102633488.PANO_1_CROP.jpg",
+                        "contentType": "image/jpeg",
+                        "title": null,
+                        "altText": null,
+                        "description": null,
+                        "size": 223823,
+                        "publicUrl": "~/uploads/e41c6cf0-882a-48c2-b5a9-247d1ae71cfb/PXL_20220529_102633488.PANO_1_CROP.jpg",
+                        "width": 2144,
+                        "height": 873,
+                        "created": "2024-03-08T17:02:42.4215853",
+                        "lastModified": "2024-03-08T17:02:45.5639451"
+                    },
+                    "hasValue": true
+                },
+                {
+                    "id": "e9a65983-693d-44a3-a45d-c149d1367e15",
+                    "media":
+                    {
+                        "properties":
+                        {
+                        },
+                        "versions":
+                        [
+                            {
+                                "id": "3c5a6604-4762-42ac-96cf-f7e0e00b2eed",
+                                "size": 13225,
+                                "width": 210,
+                                "height": 160,
+                                "fileExtension": ".jpg"
+                            }
+                        ],
+                        "id": "e9a65983-693d-44a3-a45d-c149d1367e15",
+                        "folderId": null,
+                        "type": 2,
+                        "filename": "PXL_20220529_102633488.PANO_1.jpg",
+                        "contentType": "image/jpeg",
+                        "title": null,
+                        "altText": null,
+                        "description": null,
+                        "size": 357182,
+                        "publicUrl": "~/uploads/e9a65983-693d-44a3-a45d-c149d1367e15/PXL_20220529_102633488.PANO_1.jpg",
+                        "width": 2146,
+                        "height": 1207,
+                        "created": "2024-03-08T17:02:41.865292",
+                        "lastModified": "2024-03-08T17:02:45.6450831"
+                    },
+                    "hasValue": true
+                },
+                {
+                    "id": "f26acbce-626c-4be5-a20f-140009510b85",
+                    "media":
+                    {
+                        "properties":
+                        {
+                        },
+                        "versions":
+                        [
+                            {
+                                "id": "113ddb50-8136-4d3d-80fd-45a8a32dc55c",
+                                "size": 31095,
+                                "width": 210,
+                                "height": 160,
+                                "fileExtension": ".jpg"
+                            }
+                        ],
+                        "id": "f26acbce-626c-4be5-a20f-140009510b85",
+                        "folderId": null,
+                        "type": 2,
+                        "filename": "PXL_20220529_102633488.PANO_2nd_Final.jpg",
+                        "contentType": "image/jpeg",
+                        "title": null,
+                        "altText": null,
+                        "description": null,
+                        "size": 857582,
+                        "publicUrl": "~/uploads/f26acbce-626c-4be5-a20f-140009510b85/PXL_20220529_102633488.PANO_2nd_Final.jpg",
+                        "width": 2058,
+                        "height": 879,
+                        "created": "2024-03-08T17:02:43.5458019",
+                        "lastModified": "2024-03-08T17:02:45.55224"
+                    },
+                    "hasValue": true
+                },
+                {
+                    "id": "9a3f854f-d0df-4a87-9420-08cb0b1c8e19",
+                    "media":
+                    {
+                        "properties":
+                        {
+                        },
+                        "versions":
+                        [
+                            {
+                                "id": "069c6c31-ee75-45a5-ad06-befe99ffea33",
+                                "size": 11645,
+                                "width": 210,
+                                "height": 160,
+                                "fileExtension": ".jpg"
+                            }
+                        ],
+                        "id": "9a3f854f-d0df-4a87-9420-08cb0b1c8e19",
+                        "folderId": null,
+                        "type": 2,
+                        "filename": "PXL_20220529_102633488.PANO_2nd.jpg",
+                        "contentType": "image/jpeg",
+                        "title": null,
+                        "altText": null,
+                        "description": null,
+                        "size": 255915,
+                        "publicUrl": "~/uploads/9a3f854f-d0df-4a87-9420-08cb0b1c8e19/PXL_20220529_102633488.PANO_2nd.jpg",
+                        "width": 2058,
+                        "height": 879,
+                        "created": "2024-03-08T17:02:42.7558548",
+                        "lastModified": "2024-03-08T17:02:45.7012122"
+                    },
+                    "hasValue": true
+                }
+            ]
+        },
+        "Video":
+        {
+            "$type": "Piranha.Extend.Fields.StringField, Piranha",
+            "value": "https://vimeo.com/825100308"
+        }
+    },
+    "category": null,
+    "tags":
+    [
+        {
+            "id": "2626797e-8d90-4c87-97d9-dabc418d6bfd",
+            "title": "Branding",
+            "slug": "branding",
+            "type": 0
+        },
+        {
+            "id": "ac7fc04d-000b-424f-83bd-e801b420bfcf",
+            "title": "Painting",
+            "slug": "painting",
+            "type": 0
+        },
+        {
+            "id": "b16b56a2-5403-4733-9efe-34addbb636ca",
+            "title": "Mural",
+            "slug": "mural",
+            "type": 0
+        }
+    ],
+    "blocks":
+    [
+    ],
+    "primaryImage":
+    {
+        "id": "6bbc98fd-5618-431f-ad9c-ae4da4ae1203",
+        "media":
+        {
+            "properties":
+            {
+            },
+            "versions":
+            [
+                {
+                    "id": "13f71a29-b7eb-425f-a43d-4f4857fd20f9",
+                    "size": 9159,
+                    "width": 210,
+                    "height": 160,
+                    "fileExtension": ".jpg"
+                },
+                {
+                    "id": "c9222c1a-0b8b-4f1b-950a-8d99b84d50d2",
+                    "size": 17029,
+                    "width": 448,
+                    "height": 200,
+                    "fileExtension": ".jpg"
+                }
+            ],
+            "id": "6bbc98fd-5618-431f-ad9c-ae4da4ae1203",
+            "folderId": null,
+            "type": 2,
+            "filename": "thumbnail.jpg",
+            "contentType": "image/jpeg",
+            "title": null,
+            "altText": null,
+            "description": null,
+            "size": 42364,
+            "publicUrl": "~/uploads/6bbc98fd-5618-431f-ad9c-ae4da4ae1203/thumbnail.jpg",
+            "width": 568,
+            "height": 568,
+            "created": "2024-03-08T17:02:44.843321",
+            "lastModified": "2024-03-08T17:05:25.1785507"
+        },
+        "hasValue": true
+    },
+    "excerpt": "The Big Picture",
+    "id": "c2d344c0-2457-4e0a-8485-79112589db1f",
+    "typeId": "Project",
+    "title": "The Big Picture",
+    "permissions":
+    [
+    ],
+    "created": "2024-03-08T17:05:34.8416675",
+    "lastModified": "2024-03-08T17:05:34.838692"
+}
