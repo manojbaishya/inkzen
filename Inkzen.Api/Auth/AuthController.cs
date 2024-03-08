@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+
 using Piranha.AspNetCore.Identity.Data;
 
 namespace Inkzen.Api.Auth;
@@ -38,7 +40,7 @@ public class AuthController(UserManager<User> userManager, SignInManager<User> s
         var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
 
         if (!result.Succeeded) throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
-        
+
         logger.LogInformation("Login succeeded");
         User appUser = userManager.Users.SingleOrDefault(r => r.UserName == model.Email);
 
