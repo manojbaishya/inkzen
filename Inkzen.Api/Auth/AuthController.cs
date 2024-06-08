@@ -37,20 +37,25 @@ public class AuthController(UserManager<User> userManager, SignInManager<User> s
     [Route("token")]
     public async Task<ActionResult> Token([FromBody] JwtUser model)
     {
-        var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
+        if (model is null)
+            throw new ArgumentNullException(nameof(model), "User credentials are not provided!");
 
-        if (!result.Succeeded) throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
+        var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false).ConfigureAwait(false);
+
+        if (!result.Succeeded) throw new InvalidOperationException("INVALID_LOGIN_ATTEMPT");
 
         logger.LogInformation("Login succeeded");
+
         User appUser = userManager.Users.SingleOrDefault(r => r.UserName == model.Email);
 
         logger.LogInformation("Logging in as user {username}.", appUser?.UserName);
+
         JwtToken token = new()
         {
             AccessToken = GenerateToken(model.Email, appUser)
         };
-        return Ok(token);
 
+        return Ok(token);
     }
 
     private string GenerateToken(string userName, User user)

@@ -1,10 +1,48 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>disable</ImplicitUsings>
+        <PlatformTarget>x64</PlatformTarget>
+        <Platforms>AnyCPU;x64</Platforms>
+        <StartupObject>Inkzen.Api.Program</StartupObject>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+        <AnalysisLevel>latest-all</AnalysisLevel>
+        <ImplicitUsings>disable</ImplicitUsings>
         <SatelliteResourceLanguages>en-US;en</SatelliteResourceLanguages>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <Optimize>True</Optimize>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <Optimize>True</Optimize>
+        <DebugSymbols>False</DebugSymbols>
+        <DebugType>None</DebugType>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <Optimize>False</Optimize>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <Optimize>False</Optimize>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="App\**" />
+        <Content Update="App\**" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+        <Content Update="wwwroot\**" CopyToPublishDirectory="Never" />
+        <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="appsettings.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="appsettings.Production.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
