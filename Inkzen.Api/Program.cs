@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,63 +22,61 @@ using Piranha.Manager.Editor;
 
 namespace Inkzen.Api;
 
-public class Program
+public static class Program
 {
     private static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-        ConfigurationManager config = builder.Configuration;
+        ConfigurationManager appsettings = builder.Configuration;
+        ConfigureBuilder(builder, appsettings);
 
-        builder.Services.AddAuthentication()
-            .AddCookie(options =>
-            {
-                options.AccessDeniedPath = new("/manager/login/");
-                options.LoginPath = new("/manager/Login/");
-                options.SlidingExpiration = true;
-            }
-            )
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new()
-                {
-                    ValidIssuer = config["JwtSettings:Issuer"],
-                    ValidAudience = config["JwtSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"])),
-                    ValidateAudience = true,
-                    ValidateIssuer = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true
-                };
-
-                options.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = _ => Task.CompletedTask,
-                    OnAuthenticationFailed = ctx =>
-                    {
-                        Console.WriteLine("JwtBearerEvents Exception: {0}", ctx.Exception.Message);
-                        return Task.CompletedTask;
-                    }
-                };
-            }
-            );
-
-        builder.AddPiranha(options =>
+        WebApplication app = builder.Build();
+        ConfigureApplication(app, appsettings);
+        app.Run();
+    }
+    private static void ConfigureBuilder(WebApplicationBuilder builder, ConfigurationManager appsettings)
+    {
+        builder.Services
+        .AddAuthentication()
+        .AddCookie(options =>
         {
-            options.UseCms();
-            options.UseManager();
-
-            options.UseFileStorage(naming: FileStorageNaming.UniqueFolderNames);
-            options.UseImageSharp();
-            options.UseTinyMCE();
-            options.UseMemoryCache();
-
-            options.UseApi(api => api.AllowAnonymousAccess = true);
-
-            string databaseConnection = config.GetConnectionString("piranha");
-            options.UseEF<SQLiteDb>(db => db.UseSqlite(databaseConnection));
-            options.UseIdentityWithSeed<IdentitySQLiteDb>(db => db.UseSqlite(databaseConnection));
+            options.AccessDeniedPath = new("/manager/login/");
+            options.LoginPath = new("/manager/login/");
+            options.SlidingExpiration = true;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new()
+            {
+                ValidIssuer = appsettings["JwtSettings:Issuer"],
+                ValidAudience = appsettings["JwtSettings:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appsettings["JwtSettings:Key"])),
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true
+            };
+            options.Events = new JwtBearerEvents
+            {
+                OnTokenValidated = _ => Task.CompletedTask,
+                OnAuthenticationFailed = ctx =>
+                {
+                    Console.WriteLine("JwtBearerEvents Exception: {0}", ctx.Exception.Message);
+                    return Task.CompletedTask;
+                }
+            };
         });
 
+        builder.Services.AddHostFiltering(options => options.AllowedHosts = appsettings.GetSection("AllowedHosts").Get<string[]>());
+        foreach (Cors corsSetting in appsettings.GetSection("Cors").Get<Cors[]>())
+        {
+            builder.Services.AddCors(options => options.AddPolicy(name: corsSetting.Origin, policy => policy.WithOrigins(corsSetting.Endpoints)));
+        }
+
+        builder.Services.AddHttpLogging(logging =>
+        {
+            logging.LoggingFields = HttpLoggingFields.Request;
+        });
 
         builder.Services.AddSwaggerGen(options =>
         {
@@ -84,37 +84,64 @@ public class Program
             options.CustomSchemaIds(x => x.FullName);
         });
 
+        builder.AddPiranha(options =>
+        {
+            options.UseCms();
+            options.UseManager();
+            options.UseFileStorage(naming: FileStorageNaming.UniqueFolderNames);
+            options.UseImageSharp();
+            options.UseTinyMCE();
+            options.UseMemoryCache();
+            options.UseApi(api => api.AllowAnonymousAccess = true);
+            string databaseConnection = appsettings.GetConnectionString("piranha");
+            options.UseEF<SQLiteDb>(db => db.UseSqlite(databaseConnection));
+            options.UseIdentityWithSeed<IdentitySQLiteDb>(db => db.UseSqlite(databaseConnection));
+        });
 
-        WebApplication app = builder.Build();
+    }
+    private static void ConfigureApplication(WebApplication app, ConfigurationManager appsettings)
+    {
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-
             app.UseSwagger();
             app.UseSwaggerUI(opt => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "PiranhaCMS API V1"));
         }
+
+        app.UseForwardedHeaders(new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        });
+
+        app.UseHostFiltering();
+        foreach (Cors corsSetting in appsettings.GetSection("Cors").Get<Cors[]>())
+        {
+            app.UseCors(corsSetting.Origin);
+        }
+
+        app.UseFileServer();
+        app.UseHttpLogging();
 
         app.UsePiranha(options =>
         {
             // Initialize Piranha
             App.Init(options.Api);
-
             options.UseManager();
-
             // Build content types
             new ContentTypeBuilder(options.Api)
                 .AddAssembly(typeof(Program).Assembly)
                 .Build()
                 .DeleteOrphans();
-
             // Configure Tiny MCE
             options.UseTinyMCE();
             EditorConfig.FromFile("editorconfig.json");
-
             options.UseIdentity();
         });
-
-
-        app.Run();
     }
+}
+
+public class Cors
+{
+    public string Origin { get; set; }
+    public string[] Endpoints { get; set; }
 }
