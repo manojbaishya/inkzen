@@ -213,9 +213,9 @@ watch(viewport.breakpoint, (newBreakpoint, oldBreakpoint) => {
                             v-for="file in projectDetails.images"
                             :key="file.id"
                             class="masonry-images"
-                            :src="`/Projects/${extractFilename(file.src)}`"
+                            :src="`/${extractFilename(file.src)}`"
                             :alt="file.alt"
-                            @click="() => showLightbox(`/Projects/${extractFilename(file.src)}`)"
+                            @click="() => showLightbox(`/${extractFilename(file.src)}`)"
                         />
                     </masonry-grid>
                 </IColumn>

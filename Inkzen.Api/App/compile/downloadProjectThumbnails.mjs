@@ -43,7 +43,7 @@ for (const url of thumbnails) {
         const body = Readable.fromWeb(response.body);
 
         const filename = extractFilename(url);
-        await writeFile(`public/Projects/${filename}`, body);
+        await writeFile(`public/${filename}`, body);
         console.log(`Successfully saved ${filename} to the public/ directory`);
     } catch(err) {
         console.log(`ERROR: ${err}`);
@@ -79,7 +79,7 @@ for (const projectId of project_ids) {
                 const body = Readable.fromWeb(response.body);
 
                 const filename = extractFilename(url);
-                await writeFile(`public/Projects/${filename}`, body);
+                await writeFile(`public/${filename}`, body);
                 console.log(`Successfully saved ${filename} to the public/ directory`);
             } catch(err) {
                 console.log(`ERROR: ${err}`);
@@ -122,7 +122,7 @@ for (const url of members) {
         const body = Readable.fromWeb(response.body);
 
         const filename = extractFilename(url);
-        await writeFile(`public/About/${filename}`, body);
+        await writeFile(`public/${filename}`, body);
         console.log(`Successfully saved ${filename} to the public/ directory`);
     } catch(err) {
         console.log(`ERROR: ${err}`);

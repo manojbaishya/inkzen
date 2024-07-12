@@ -40,7 +40,7 @@ const { data: projects } = await useFetch(getAllProjects);
                             <span class="project-title">{{ project.title }}</span>
                             <NuxtImg
                                 class="project-thumbnail"
-                                :src="`/Projects/${extractFilename(project.primaryImage.media.publicUrl)}`"
+                                :src="`/${extractFilename(project.primaryImage.media.publicUrl)}`"
                             />
                         </div>
                     </NuxtLink>

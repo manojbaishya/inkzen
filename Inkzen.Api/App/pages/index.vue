@@ -15,7 +15,7 @@
         <img
             id="hero-image"
             class="_margin-y:4!"
-            src="/pexels-malcolmhill-11772945.jpg"
+            src="/hero-image.jpg"
         >
     </div>
 </template>

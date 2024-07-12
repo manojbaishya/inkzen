@@ -240,7 +240,7 @@ const { data: team } = await useFetch(getAllTeam);
                         >
                             <template #image>
                                 <NuxtImg
-                                    :src="`/About/${extractFilename(member.photo.media.publicUrl)}`"
+                                    :src="`/${extractFilename(member.photo.media.publicUrl)}`"
                                     :alt="member.photo.media.altText"
                                 />
                             </template>
