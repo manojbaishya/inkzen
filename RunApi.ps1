@@ -1,3 +1,10 @@
+param([switch] $WithBuild = $false) 
+
+if ($WithBuild -eq $true) {
+    Write-Host "Building Inkzen.Api."
+    dotnet build
+}
+
 try {
     $env:ASPNETCORE_ENVIRONMENT = 'Development'
     $env:ASPNETCORE_URLS = 'http://localhost:5000;https://localhost:5001'

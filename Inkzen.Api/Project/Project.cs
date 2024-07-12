@@ -5,7 +5,7 @@ using Piranha.Extend;
 using Piranha.Extend.Fields;
 using Piranha.Models;
 
-namespace Inkzen.Api.Project;
+namespace Inkzen.Api;
 
 [ContentGroup(Id = "Projects", Title = "Projects", Icon = "fas fa-building")]
 public abstract class Projects<T> : Content<T> where T : Projects<T>;

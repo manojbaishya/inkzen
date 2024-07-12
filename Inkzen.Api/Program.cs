@@ -67,15 +67,22 @@ public static class Program
             };
         });
 
-        builder.Services.AddHostFiltering(options => options.AllowedHosts = appsettings.GetSection("AllowedHosts").Get<string[]>());
-        foreach (Cors corsSetting in appsettings.GetSection("Cors").Get<Cors[]>())
-        {
-            builder.Services.AddCors(options => options.AddPolicy(name: corsSetting.Origin, policy => policy.WithOrigins(corsSetting.Endpoints)));
-        }
+        // builder.Services.AddHostFiltering(options => options.AllowedHosts = appsettings.GetSection("AllowedHosts").Get<string[]>());
+        // foreach (Cors corsSetting in appsettings.GetSection("Cors").Get<Cors[]>())
+        // {
+        //     builder.Services.AddCors(options => options.AddPolicy(name: corsSetting.Origin, policy => policy.WithOrigins(corsSetting.Endpoints)));
+        // }
+
+        builder.Services.AddCors(options => options.AddPolicy("AllowAllOrigins",
+                builder => builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()));
 
         builder.Services.AddHttpLogging(logging =>
         {
             logging.LoggingFields = HttpLoggingFields.Request;
+            logging.RequestHeaders.Add("Origin");
         });
 
         builder.Services.AddSwaggerGen(options =>
@@ -98,6 +105,10 @@ public static class Program
             options.UseIdentityWithSeed<IdentitySQLiteDb>(db => db.UseSqlite(databaseConnection));
         });
 
+        builder.Services.AddPiranhaMemoryCache();
+
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
     }
     private static void ConfigureApplication(WebApplication app, ConfigurationManager appsettings)
     {
@@ -113,14 +124,17 @@ public static class Program
             ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
         });
 
-        app.UseHostFiltering();
-        foreach (Cors corsSetting in appsettings.GetSection("Cors").Get<Cors[]>())
-        {
-            app.UseCors(corsSetting.Origin);
-        }
+        // app.UseHostFiltering();
+        // foreach (Cors corsSetting in appsettings.GetSection("Cors").Get<Cors[]>())
+        // {
+        //     app.UseCors(corsSetting.Origin);
+        // }
+
+        app.UseCors("AllowAllOrigins");
 
         app.UseFileServer();
         app.UseHttpLogging();
+        app.UseExceptionHandler((_ => { }));
 
         app.UsePiranha(options =>
         {
