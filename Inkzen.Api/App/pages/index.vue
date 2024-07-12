@@ -12,11 +12,11 @@
             >
         </video>
 
-        <NuxtImg
+        <img
             id="hero-image"
             class="_margin-y:4!"
             src="/pexels-malcolmhill-11772945.jpg"
-        />
+        >
     </div>
 </template>
 
