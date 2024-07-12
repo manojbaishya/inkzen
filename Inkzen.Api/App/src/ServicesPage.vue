@@ -1,3 +1,0 @@
-<template>
-    Services Page
-</template>

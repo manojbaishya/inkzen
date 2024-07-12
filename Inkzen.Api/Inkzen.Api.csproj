@@ -8,6 +8,7 @@
         <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
         <AnalysisLevel>latest-all</AnalysisLevel>
         <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
         <SatelliteResourceLanguages>en-US;en</SatelliteResourceLanguages>
     </PropertyGroup>
 
@@ -62,5 +63,9 @@
         <PackageReference Include="Piranha.Manager.LocalAuth" Version="10.4.0" />
         <PackageReference Include="Piranha.Manager.TinyMCE" Version="10.4.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Shared/" />
     </ItemGroup>
 </Project>
